@@ -10,18 +10,20 @@ void ofApp::setup(){
     //load the shader
     starterShader.load("starter");
     guiShader.load("gui");
+    shapingShader.load("shaping");
+    embroiderShader.load("embroider");
     
-    currentShader = guiShader;
+    currentShader = embroiderShader;
     // Settings for the 3D camera
     myCamera.setPosition(vec3(0.0, 8.0, 24.0));
     myCamera.setTarget(vec3(0.0, 4.0, 0.0));
     myCamera.setFov(32.0);
     myCamera.setNearClip(0.05);
-    myCamera.setFarClip(100.0);
+    myCamera.setFarClip(300.0);
     myCamera.setAutoDistance(false);
     
     myMesh.setRadius( 10);
-    
+    ofDisableArbTex();
     myGui.setup();
     
     myGui.add(offset.setup("Offset", 0.5, 0., 1., 200, 20));
@@ -45,14 +47,18 @@ void ofApp::draw(){
     //necessary to draw the shader
 //    ofDrawRectangle(0, 0, ofGetWidth(), ofGetHeight());
     currentShader.setUniform1f("offset", offset);
+    currentShader.setUniform1f("time", ofGetElapsedTimef());
     
-    myMesh.setPosition(0,5,0);
-    myMesh.drawWireframe();
+    myMesh.setPosition(0,0,0);
+    myMesh.draw();
 
     currentShader.end();
     
     // Draw a grid (which will be drawn using the default openFrameworks shader)
-    ofDrawGrid(2.0, 10, false, false, true, false);
+//    ofDrawGrid(2.0, 10, false, false, true, false);
+//    ofDrawRotationAxes(10);
+    ofDrawAxis(20);
+    // red is x, green is y, and blue is z
     
     myCamera.end();
     ofDisableDepthTest();
@@ -62,7 +68,7 @@ void ofApp::draw(){
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-
+    myMesh.getMesh().save(std::string("vertices") + std::to_string(ofGetElapsedTimeMillis()) + std::string(".ply"), false);
 }
 
 //--------------------------------------------------------------

@@ -25,6 +25,8 @@ class ofApp : public ofBaseApp{
         ofShader starterShader;
         ofShader guiShader;
         ofShader currentShader;
+    ofShader embroiderShader;
+    ofShader shapingShader;
         ofxPanel myGui;
         ofxFloatSlider offset;
         ofEasyCam myCamera;
